@@ -1,0 +1,139 @@
+add_newline = true
+command_timeout = 1000
+
+format = """
+[╭─](bold bright_magenta)\
+$os\
+$username\
+$hostname\
+$directory\
+$git_branch\
+$git_status\
+$fill\
+$cmd_duration\
+$time\
+$line_break\
+[╰─](bold bright_magenta)$character"""
+
+[os]
+disabled = false
+style = "bold bright_magenta"
+format = "[$symbol ]($style)"
+
+[os.symbols]
+Arch = "󰣇"
+CachyOS = "󰣇"
+Linux = "󰌽"
+
+[username]
+show_always = true
+style_user = "bold bright_blue"
+style_root = "bold bright_red"
+format = "[$user]($style)"
+
+[hostname]
+ssh_only = false
+style = "bold bright_cyan"
+format = "[@$hostname]($style) "
+
+[directory]
+style = "bold bright_blue"
+format = "[$path]($style)[$read_only]($read_only_style)"
+truncation_length = 3
+truncate_to_repo = false
+read_only = " 󰌾"
+read_only_style = "bold bright_red"
+
+[directory.substitutions]
+"~" = "󰋜 ~"
+"Downloads" = "󰉍 Downloads"
+"Documents" = "󰈙 Documents"
+"Pictures" = "󰉏 Pictures"
+"Music" = "󰝚 Music"
+"Videos" = "󰕧 Videos"
+".config" = "󰒓 .config"
+
+[git_branch]
+symbol = "󰘬 "
+style = "bold bright_magenta"
+format = "[$symbol$branch]($style)"
+
+[git_status]
+style = "bold bright_red"
+format = " [$all_status$ahead_behind]($style)"
+
+[fill]
+symbol = " "
+
+[cmd_duration]
+min_time = 1000
+style = "bold bright_yellow"
+format = "[󱎫 $duration]($style)"
+
+[time]
+disabled = false
+time_format = "%H:%M"
+style = "bold bright_cyan"
+format = "[󰥔 $time]($style)"
+
+[character]
+success_symbol = "[❯](bold bright_magenta)"
+error_symbol = "[❯](bold bright_red)"
+vimcmd_symbol = "[❮](bold bright_blue)"
+vimcmd_replace_one_symbol = "[❮](bold bright_magenta)"
+vimcmd_replace_symbol = "[❮](bold bright_magenta)"
+vimcmd_visual_symbol = "[❮](bold bright_cyan)"
+
+[status]
+disabled = false
+symbol = "✗ "
+style = "bold bright_red"
+format = "[$symbol$status]($style) "
+
+[package]
+disabled = true
+
+[nodejs]
+disabled = true
+
+[python]
+disabled = false
+symbol = "󰌠 "
+style = "bold bright_yellow"
+format = "[$symbol$version]($style) "
+
+[rust]
+disabled = false
+symbol = "󱘗 "
+style = "bold bright_red"
+format = "[$symbol$version]($style) "
+
+[c]
+disabled = true
+
+[cpp]
+disabled = true
+
+[docker_context]
+disabled = true
+
+[kubernetes]
+disabled = true
+
+[terraform]
+disabled = true
+
+[aws]
+disabled = true
+
+[gcloud]
+disabled = true
+
+[conda]
+disabled = true
+
+[memory_usage]
+disabled = true
+
+[env_var]
+disabled = true
