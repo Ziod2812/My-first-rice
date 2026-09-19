@@ -3,6 +3,7 @@ set -Eeuo pipefail
 
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 PKG_DIR="$SCRIPT_DIR/packages"
+CONFIG_SRC=""
 
 YES=0
 DO_UPGRADE=1
@@ -45,7 +46,7 @@ Usage: ./install.sh [options]
       --skip-configs   only install packages, do not copy configs
   -h, --help         show this help
 
-Place this file at the root of the Astra directory, next to .config/,
+Place this file at the root of the repository, next to .config/ (or config/),
 matugen/ and packages/. Overwritten configs are backed up to
 ~/.local/share/astra/backups/<timestamp>/.
 USAGE
@@ -85,7 +86,11 @@ preflight() {
   step "Checking environment"
   [[ $EUID -ne 0 ]] || die "Do not run as root. Run as a regular user; sudo is called when needed."
   [[ -n ${HOME:-} && -d $HOME ]] || die "HOME is not set or is not a directory."
-  [[ -d $SCRIPT_DIR/.config ]] || die "Cannot find .config next to install.sh. Place install.sh at the root of the Astra directory."
+  local d
+  for d in .config config; do
+    if [[ -d $SCRIPT_DIR/$d ]]; then CONFIG_SRC="$SCRIPT_DIR/$d"; break; fi
+  done
+  [[ -n $CONFIG_SRC ]] || die "Cannot find a .config (or config) directory next to install.sh. Place install.sh at the root of the repository."
 
   if [[ $DO_PACKAGES -eq 1 ]]; then
     command -v pacman >/dev/null 2>&1 || die "pacman not found. This script supports Arch/CachyOS only (use --skip-packages to only copy configs)."
@@ -275,7 +280,7 @@ apply_fixups() {
 install_configs() {
   step "Copying configs to \$HOME"
   STAGE="$(mktemp -d)"
-  cp -a "$SCRIPT_DIR/.config" "$STAGE/config"
+  cp -a "$CONFIG_SRC" "$STAGE/config"
   if [[ -d $SCRIPT_DIR/matugen ]]; then cp -a "$SCRIPT_DIR/matugen" "$STAGE/matugen"; fi
   apply_fixups
 
